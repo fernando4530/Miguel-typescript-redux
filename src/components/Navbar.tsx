@@ -41,6 +41,7 @@ const Navbar: React.FC<NavbarProps> = ({
               <Button
                 color="inherit"
                 sx={{
+                  color: "white",
                   backgroundColor: "blue",
                   marginLeft: index > 0 ? "10px" : "0",
                 }}
