@@ -1,16 +1,26 @@
-import React from 'react';
-import { Provider } from 'react-redux';
-import { BrowserRouter as Router } from 'react-router-dom';
-import Navbar from './components/Navbar';
-import store from './components/Store';
+import { useState } from "react";
+import { BrowserRouter as Router } from "react-router-dom";
+import Navbar from "./components/Navbar";
 
-const App: React.FC = () => {
+const App = () => {
+  const [showUserInfo, setShowUserInfo] = useState(true);
+
+  const handleShowUserInfo = () => {
+    setShowUserInfo(true);
+  };
+
+  const handleShowSavedUsers = () => {
+    setShowUserInfo(false);
+  };
+
   return (
-    <Provider store={store}>
-      <Router>
-        <Navbar />
-      </Router>
-    </Provider>
+    <Router>
+      <Navbar
+        showUserInfo={showUserInfo}
+        handleShowUserInfo={handleShowUserInfo}
+        handleShowSavedUsers={handleShowSavedUsers}
+      />
+    </Router>
   );
 };
 
