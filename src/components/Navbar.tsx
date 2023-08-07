@@ -1,9 +1,13 @@
-import { AppBar, Toolbar, Button } from "@mui/material";
+import React from "react";
+import { AppBar, Toolbar, Button, Badge } from "@mui/material";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import EventNoteIcon from "@mui/icons-material/EventNote";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import { useSelector } from "react-redux";
+import { RootState } from "../redux/Store";
 import RandomUsers from "./RandomUsers";
-import MyAgenda from "./MyAgenda";
 import Favorites from "./Favorites";
+import MyAgenda from "./MyAgenda";
 
 interface NavbarProps {
   showViews: boolean;
@@ -20,6 +24,13 @@ const Navbar: React.FC<NavbarProps> = ({
   handleShowFavorites,
   showFavorites,
 }) => {
+  const selectedUsers = useSelector(
+    (state: RootState) => state.user.selectedUsers
+  );
+  const favoriteUsers = useSelector(
+    (state: RootState) => state.favorites.favorites
+  );
+
   return (
     <div>
       <AppBar position="static" sx={{ backgroundColor: "blueviolet" }}>
@@ -36,30 +47,35 @@ const Navbar: React.FC<NavbarProps> = ({
             Usuarios random
           </Button>
 
-          <Button
-            color="inherit"
-            sx={{
-              color: "white",
-              backgroundColor: "blue",
-              marginLeft: "10px",
-            }}
-            onClick={handleShowMyAgenda}
-            startIcon={<EventNoteIcon />}
-          >
-            Mi Agenda
-          </Button>
+          <Badge badgeContent={selectedUsers.length} color="error">
+            <Button
+              color="inherit"
+              sx={{
+                color: "white",
+                backgroundColor: "blue",
+                marginLeft: "10px",
+              }}
+              onClick={handleShowMyAgenda}
+              startIcon={<EventNoteIcon />}
+            >
+              Mi Agenda
+            </Button>
+          </Badge>
 
-          <Button
-            color="inherit"
-            sx={{
-              color: "white",
-              backgroundColor: "blue",
-              marginLeft: "10px",
-            }}
-            onClick={handleShowFavorites}
-          >
-            Favoritos
-          </Button>
+          <Badge badgeContent={favoriteUsers.length} color="error">
+            <Button
+              color="inherit"
+              sx={{
+                color: "white",
+                backgroundColor: "blue",
+                marginLeft: "10px",
+              }}
+              onClick={handleShowFavorites}
+              startIcon={<FavoriteIcon />}
+            >
+              Favoritos
+            </Button>
+          </Badge>
         </Toolbar>
       </AppBar>
 
