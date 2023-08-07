@@ -4,7 +4,6 @@ import App from "./App";
 import { Provider } from "react-redux";
 import Store from "./redux/Store";
 
-// Renderizar el componente principal "App" en el elemento con el id "root" del DOM
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={Store}>

@@ -1,60 +1,72 @@
-import React from "react";
-import { Link } from "react-router-dom";
 import { AppBar, Toolbar, Button } from "@mui/material";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import EventNoteIcon from "@mui/icons-material/EventNote";
-import UserInfo from "./RandomUsers";
-import SavedUsers from "./MyAgenda";
+import RandomUsers from "./RandomUsers";
+import MyAgenda from "./MyAgenda";
+import Favorites from "./Favorites";
 
 interface NavbarProps {
-  showUserInfo: boolean;
-  handleShowUserInfo: () => void;
-  handleShowSavedUsers: () => void;
+  showViews: boolean;
+  handleShowRandomUser: () => void;
+  handleShowMyAgenda: () => void;
+  handleShowFavorites: () => void;
+  showFavorites: boolean;
 }
 
 const Navbar: React.FC<NavbarProps> = ({
-  showUserInfo,
-  handleShowUserInfo,
-  handleShowSavedUsers,
+  showViews,
+  handleShowRandomUser,
+  handleShowMyAgenda,
+  handleShowFavorites,
+  showFavorites,
 }) => {
-  const buttons = [
-    {
-      label: "Usuarios random",
-      icon: <AccountCircleIcon />,
-      onClick: handleShowUserInfo,
-      to: "/usuarios-random",
-    },
-    {
-      label: "Mi Agenda",
-      icon: <EventNoteIcon />,
-      onClick: handleShowSavedUsers,
-      to: "/mi-agenda",
-    },
-  ];
-
   return (
     <div>
       <AppBar position="static" sx={{ backgroundColor: "blueviolet" }}>
         <Toolbar>
-          {buttons.map((button, index) => (
-            <Link key={index} to={button.to} style={{ textDecoration: "none" }}>
-              <Button
-                color="inherit"
-                sx={{
-                  color: "white",
-                  backgroundColor: "blue",
-                  marginLeft: index > 0 ? "10px" : "0",
-                }}
-                onClick={button.onClick}
-                startIcon={button.icon}
-              >
-                {button.label}
-              </Button>
-            </Link>
-          ))}
+          <Button
+            color="inherit"
+            sx={{
+              color: "white",
+              backgroundColor: "blue",
+            }}
+            onClick={handleShowRandomUser}
+            startIcon={<AccountCircleIcon />}
+          >
+            Usuarios random
+          </Button>
+
+          <Button
+            color="inherit"
+            sx={{
+              color: "white",
+              backgroundColor: "blue",
+              marginLeft: "10px",
+            }}
+            onClick={handleShowMyAgenda}
+            startIcon={<EventNoteIcon />}
+          >
+            Mi Agenda
+          </Button>
+
+          <Button
+            color="inherit"
+            sx={{
+              color: "white",
+              backgroundColor: "blue",
+              marginLeft: "10px",
+            }}
+            onClick={handleShowFavorites}
+          >
+            Favoritos
+          </Button>
         </Toolbar>
       </AppBar>
-      {showUserInfo ? <UserInfo /> : <SavedUsers />}
+
+      {/* Lógica de renderizado condicional para mostrar las vistas alternadamente */}
+      {showViews && !showFavorites && <RandomUsers />}
+      {!showViews && !showFavorites && <MyAgenda />}
+      {showFavorites && <Favorites />}
     </div>
   );
 };

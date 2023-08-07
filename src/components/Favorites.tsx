@@ -3,30 +3,27 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../redux/Store";
 import { UserData } from "../redux/models/UserTypes";
 import { Grid, Card, CardContent, Avatar, Typography } from "@mui/material";
+import FavoriteIcon from "@mui/icons-material/Favorite"; // Importa el icono FavoriteIcon
 import { toggleFavorite } from "../redux/reducers/FavoritesSlice"; // Importa la acción para marcar/desmarcar favoritos
 
-import FavoriteIcon from "@mui/icons-material/Favorite";
-
-const MyAgenda: React.FC = () => {
-  const selectedUsers = useSelector(
-    (state: RootState) => state.user.selectedUsers
-  );
+const Favorites: React.FC = () => {
   const favorites = useSelector(
     (state: RootState) => state.favorites.favorites
   );
   const dispatch = useDispatch();
 
-  const isUserFavorite = (user: UserData) =>
-    favorites.some((favUser) => favUser.id === user.id);
+  const handleToggleFavorite = (user: UserData) => {
+    dispatch(toggleFavorite(user)); // Dispara la acción para marcar/desmarcar favoritos
+  };
 
   return (
     <div>
-      <h2>Mi Agenda:</h2>
+      <h2>Favoritos:</h2>
       <Grid container spacing={2}>
-        {selectedUsers.map((user: UserData) => (
-          <Grid item xs={6} sm={6} md={3} lg={3} xl={3} key={user.id}>
+        {favorites.map((user: UserData) => (
+          <Grid item xs={12} sm={6} md={3} key={user.id}>
             {" "}
-            {/* Cada carta ocupará 3 columnas en pantallas pequeñas y medianas, y 4 columnas en pantallas grandes */}
+            {/* Cada card ocupará 3 columnas en pantallas medianas */}
             <Card sx={{ marginBottom: 20 }}>
               <Avatar
                 alt="Avatar"
@@ -43,15 +40,10 @@ const MyAgenda: React.FC = () => {
                 <Typography variant="body2" color="text.secondary">
                   Email: {user.email}
                 </Typography>
-                {/* Mostrar más información del usuario aquí */}
-
-                {/* Agregar más campos según la estructura de UserData */}
               </CardContent>
               <CardContent>
-                <div onClick={() => dispatch(toggleFavorite(user))}>
-                  <FavoriteIcon
-                    style={{ fill: isUserFavorite(user) ? "red" : "grey" }}
-                  />
+                <div onClick={() => handleToggleFavorite(user)}>
+                  <FavoriteIcon style={{ fill: "red" }} />
                 </div>
               </CardContent>
             </Card>
@@ -62,4 +54,4 @@ const MyAgenda: React.FC = () => {
   );
 };
 
-export default MyAgenda;
+export default Favorites;
