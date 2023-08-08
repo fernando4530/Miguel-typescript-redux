@@ -14,7 +14,7 @@ import {
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import SaveIcon from "@mui/icons-material/Save";
 
-const RandomUsers = () => {
+function RandomUsers() {
   // Obtener el dispatch y el estado "selectedUsers" y "currentUser" del store
   const dispatch = useDispatch();
   const { selectedUsers, currentUser } = useSelector(
@@ -64,7 +64,7 @@ const RandomUsers = () => {
       <Card
         sx={{
           maxWidth: 345,
-          boxShadow: 4 ,
+          boxShadow: 4,
         }}
       >
         <CardContent>
@@ -77,7 +77,7 @@ const RandomUsers = () => {
               margin: "0 auto",
               marginBottom: 3,
               border: "4px solid blue",
-              backgroundColor: "blueviolet"
+              backgroundColor: "blueviolet",
             }}
           />
           <Typography gutterBottom variant="h5" component="div" align="center">
@@ -111,6 +111,6 @@ const RandomUsers = () => {
       </Card>
     </div>
   );
-};
+}
 
 export default RandomUsers;

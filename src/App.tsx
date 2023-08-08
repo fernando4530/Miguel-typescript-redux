@@ -3,22 +3,32 @@ import { BrowserRouter as Router } from "react-router-dom";
 import Navbar from "./components/Navbar";
 
 const App = () => {
-  const [showUserInfo, setShowUserInfo] = useState(true);
+  const [showViews, setShowViews] = useState(true);
+  const [showFavorites, setShowFavorites] = useState(false);
 
-  const handleShowUserInfo = () => {
-    setShowUserInfo(true);
+  const handleShowRandomUser = () => {
+    setShowViews(true);
+    setShowFavorites(false);
   };
 
-  const handleShowSavedUsers = () => {
-    setShowUserInfo(false);
+  const handleShowMyAgenda = () => {
+    setShowViews(false);
+    setShowFavorites(false);
+  };
+
+  const handleShowFavorites = () => {
+    setShowViews(false);
+    setShowFavorites(true);
   };
 
   return (
     <Router>
       <Navbar
-        showUserInfo={showUserInfo}
-        handleShowUserInfo={handleShowUserInfo}
-        handleShowSavedUsers={handleShowSavedUsers}
+        showViews={showViews}
+        handleShowRandomUser={handleShowRandomUser}
+        handleShowMyAgenda={handleShowMyAgenda}
+        handleShowFavorites={handleShowFavorites}
+        showFavorites={showFavorites}
       />
     </Router>
   );

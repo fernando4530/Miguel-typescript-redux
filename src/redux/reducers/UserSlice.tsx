@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { UserData } from "../../models/UserTypes"; // Importa la interfaz UserData
+import { UserData } from "../models/UserTypes"; // Importa la interfaz UserData
 
 interface UserState {
   selectedUsers: UserData[];
