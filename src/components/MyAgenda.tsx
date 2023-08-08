@@ -31,7 +31,7 @@ const MyAgenda: React.FC = () => {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          width: "100%", // Ajustar el ancho al 100% para ocupar todo el espacio disponible
+          width: "100%",
         }}
       >
         Mi Agenda
@@ -39,7 +39,7 @@ const MyAgenda: React.FC = () => {
 
       <Grid container spacing={2}>
         {selectedUsers.map((user: UserData) => (
-          <Grid item xs={6} sm={6} md={3} lg={3} xl={3} key={user.id}>
+          <Grid item xs={6} sm={6} md={3} lg={3} xl={3} key={user.id.value}>
             <Card
               sx={{
                 marginBottom: -2,
@@ -50,7 +50,7 @@ const MyAgenda: React.FC = () => {
             >
               <Avatar
                 alt="Avatar"
-                src={user.avatar}
+                src={user.picture.large}
                 sx={{
                   width: 100,
                   height: 100,
@@ -71,10 +71,10 @@ const MyAgenda: React.FC = () => {
                 }}
               >
                 <Typography gutterBottom variant="h5" component="div">
-                  {user.first_name}
+                  {user.name.first}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  Username: {user.username}
+                  Apellido: {user.name.last}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
                   Email: {user.email}
@@ -83,8 +83,10 @@ const MyAgenda: React.FC = () => {
               <CardContent>
                 <div onClick={() => dispatch(toggleFavorite(user))}>
                   <FavoriteIcon
+                    sx={{ marginLeft: 1.5 }}
                     style={{ fill: isUserFavorite(user) ? "red" : "grey" }}
                   />
+                  <Typography sx={{ marginBottom: -2 }}>favorito</Typography>
                 </div>
               </CardContent>
             </Card>

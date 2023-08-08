@@ -5,25 +5,20 @@ import EventNoteIcon from "@mui/icons-material/EventNote";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/Store";
+import { Link, Route, Routes } from "react-router-dom"; // Importa las funciones de enrutamiento
 import RandomUsers from "./RandomUsers";
 import Favorites from "./Favorites";
 import MyAgenda from "./MyAgenda";
 
 interface NavbarProps {
-  showViews: boolean;
+  handleShowFavorites: () => void;
   handleShowRandomUser: () => void;
   handleShowMyAgenda: () => void;
-  handleShowFavorites: () => void;
   showFavorites: boolean;
+  showViews: boolean;
 }
 
-const Navbar: React.FC<NavbarProps> = ({
-  showViews,
-  handleShowRandomUser,
-  handleShowMyAgenda,
-  handleShowFavorites,
-  showFavorites,
-}) => {
+const Navbar: React.FC<NavbarProps> = ({ handleShowFavorites }) => {
   const selectedUsers = useSelector(
     (state: RootState) => state.user.selectedUsers
   );
@@ -41,7 +36,8 @@ const Navbar: React.FC<NavbarProps> = ({
               color: "white",
               backgroundColor: "blue",
             }}
-            onClick={handleShowRandomUser}
+            component={Link} // Utiliza el componente Link para enrutamiento interno
+            to="/randomusers" // Define la ruta a la que se redirigirá
             startIcon={<AccountCircleIcon />}
           >
             Usuarios random
@@ -55,7 +51,8 @@ const Navbar: React.FC<NavbarProps> = ({
                 backgroundColor: "blue",
                 marginLeft: "10px",
               }}
-              onClick={handleShowMyAgenda}
+              component={Link}
+              to="/myagenda"
               startIcon={<EventNoteIcon />}
             >
               Mi Agenda
@@ -72,6 +69,8 @@ const Navbar: React.FC<NavbarProps> = ({
               }}
               onClick={handleShowFavorites}
               startIcon={<FavoriteIcon />}
+              component={Link}
+              to="/favorites"
             >
               Favoritos
             </Button>
@@ -89,16 +88,18 @@ const Navbar: React.FC<NavbarProps> = ({
           alignItems: "center",
           justifyContent: "center",
           boxShadow: 10,
-          width: "100%", // Ajustar el ancho al 100% para ocupar todo el espacio disponible
+          width: "100%",
         }}
       >
-        Agenda tu usuario aeleatorio
+        Agenda tu usuario aleatorio
       </Button>
 
-      {/* Lógica de renderizado condicional para mostrar las vistas alternadamente */}
-      {showViews && !showFavorites && <RandomUsers />}
-      {!showViews && !showFavorites && <MyAgenda />}
-      {showFavorites && <Favorites />}
+      {/* Rutas para las vistas */}
+      <Routes>
+        <Route path="/randomusers" element={<RandomUsers />} />
+        <Route path="/myagenda" element={<MyAgenda />} />
+        <Route path="/favorites" element={<Favorites />} />
+      </Routes>
     </div>
   );
 };

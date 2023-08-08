@@ -29,16 +29,14 @@ const Favorites: React.FC = () => {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          width: "100%", // Ajustar el ancho al 100% para ocupar todo el espacio disponible
+          width: "100%",
         }}
       >
         Favoritos
       </Button>
       <Grid container spacing={2}>
         {favorites.map((user: UserData) => (
-          <Grid item xs={12} sm={6} md={3} key={user.id}>
-            {" "}
-            {/* Cada card ocupará 3 columnas en pantallas medianas */}
+          <Grid item xs={12} sm={6} md={3} key={user.id.value}>
             <Card
               sx={{
                 marginBottom: -2,
@@ -47,9 +45,12 @@ const Favorites: React.FC = () => {
                 backgroundColor: "#b0c4de",
               }}
             >
+              <Typography gutterBottom variant="h5" component="div" sx={{textAlign: "center"}}>
+                {user.name.first}
+              </Typography>
               <Avatar
                 alt="Avatar"
-                src={user.avatar}
+                src={user.picture.large}
                 sx={{
                   width: 100,
                   height: 100,
@@ -68,11 +69,8 @@ const Favorites: React.FC = () => {
                   borderRadius: "8px",
                 }}
               >
-                <Typography gutterBottom variant="h5" component="div">
-                  {user.first_name}
-                </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  Username: {user.username}
+                  Username: {user.login.username}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
                   Email: {user.email}
@@ -89,6 +87,7 @@ const Favorites: React.FC = () => {
               >
                 <div onClick={() => handleToggleFavorite(user)}>
                   <FavoriteIcon style={{ fill: "red" }} />
+                  <Typography>Eliminar de favoritos</Typography>
                 </div>
               </CardContent>
             </Card>

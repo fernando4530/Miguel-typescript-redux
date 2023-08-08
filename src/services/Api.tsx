@@ -1,16 +1,13 @@
-// utils/api.js (o api.ts si usas TypeScript)
-const API_URL = "https://random-data-api.com/api/v2/users";
+import axios from 'axios';
+
+const API_URL = 'https://randomuser.me/api/';
 
 export const fetchRandomUserData = async () => {
   try {
-    const response = await fetch(API_URL);
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
-    }
-    const data = await response.json();
-    return data;
+    const response = await axios.get(API_URL);
+    return response.data.results[0]; // Accedemos al primer resultado
   } catch (error) {
-    console.error("Error fetching random user data:", error);
+    console.error('Error fetching random user data:', error);
     return null;
   }
 };
