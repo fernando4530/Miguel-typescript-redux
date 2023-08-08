@@ -64,10 +64,10 @@ function RandomUsers() {
       <Card
         sx={{
           maxWidth: 345,
-          boxShadow: 4,
+          boxShadow: 8,
         }}
       >
-        <CardContent>
+        <CardContent sx={{backgroundColor: "#b0c4de"}}>
           <Avatar
             src={userAvatar}
             alt="Avatar"

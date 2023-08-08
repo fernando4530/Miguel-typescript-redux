@@ -78,6 +78,22 @@ const Navbar: React.FC<NavbarProps> = ({
           </Badge>
         </Toolbar>
       </AppBar>
+      <Button
+        variant="contained"
+        sx={{
+          fontFamily: '"Segoe UI Symbol"',
+          fontSize: "30px",
+          color: "white",
+          backgroundColor: "blueviolet",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          boxShadow: 10,
+          width: "100%", // Ajustar el ancho al 100% para ocupar todo el espacio disponible
+        }}
+      >
+        Agenda tu usuario aeleatorio
+      </Button>
 
       {/* Lógica de renderizado condicional para mostrar las vistas alternadamente */}
       {showViews && !showFavorites && <RandomUsers />}
