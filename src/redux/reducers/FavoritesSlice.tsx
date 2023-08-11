@@ -2,11 +2,13 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { UserData } from "../models/UserTypes";
 
 interface FavoritesState {
+  selectedUser: any;
   favorites: UserData[];
 }
 
 const initialState: FavoritesState = {
   favorites: [],
+  selectedUser: undefined
 };
 
 const favoritesSlice = createSlice({

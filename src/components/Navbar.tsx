@@ -1,14 +1,16 @@
+// Navbar.tsx
 import React from "react";
 import { AppBar, Toolbar, Button, Badge } from "@mui/material";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import EventNoteIcon from "@mui/icons-material/EventNote";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import { useSelector } from "react-redux";
+import EditIcon from '@mui/icons-material/Edit';import { useSelector } from "react-redux";
 import { RootState } from "../redux/Store";
-import { Link, Route, Routes } from "react-router-dom"; // Importa las funciones de enrutamiento
+import { Link, Route, Routes } from "react-router-dom";
 import RandomUsers from "./RandomUsers";
 import Favorites from "./Favorites";
 import MyAgenda from "./MyAgenda";
+import Post from "./Post";
 
 interface NavbarProps {
   handleShowFavorites: () => void;
@@ -36,8 +38,8 @@ const Navbar: React.FC<NavbarProps> = ({ handleShowFavorites }) => {
               color: "white",
               backgroundColor: "blue",
             }}
-            component={Link} // Utiliza el componente Link para enrutamiento interno
-            to="/randomusers" // Define la ruta a la que se redirigirá
+            component={Link}
+            to="/randomusers"
             startIcon={<AccountCircleIcon />}
           >
             Usuarios random
@@ -75,6 +77,19 @@ const Navbar: React.FC<NavbarProps> = ({ handleShowFavorites }) => {
               Favoritos
             </Button>
           </Badge>
+          <Button
+          startIcon={<EditIcon />}
+            color="inherit"
+            sx={{
+              backgroundColor: "blue",
+              color: "white",
+              marginLeft: 1,
+            }}
+            component={Link}
+            to="/post"
+          >
+            Post
+          </Button>
         </Toolbar>
       </AppBar>
       <Button
@@ -99,6 +114,8 @@ const Navbar: React.FC<NavbarProps> = ({ handleShowFavorites }) => {
         <Route path="/randomusers" element={<RandomUsers />} />
         <Route path="/myagenda" element={<MyAgenda />} />
         <Route path="/favorites" element={<Favorites />} />
+        <Route path="/post" element={<Post />} />{" "}
+        {/* Agrega la ruta para el componente Post */}
       </Routes>
     </div>
   );

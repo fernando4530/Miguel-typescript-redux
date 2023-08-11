@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { setSelectedUser } from "../redux/reducers/UserLoggedInSlice";
 import { setCurrentUser, addUser } from "../redux/reducers/UserSlice";
 import { fetchRandomUserData } from "../services/Api";
 import {
@@ -18,6 +19,7 @@ function RandomUsers() {
   const dispatch = useDispatch();
   const { currentUser } = useSelector((state: RootState) => state.user);
   const [userAvatar, setUserAvatar] = useState("");
+  const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
 
   useEffect(() => {
     fetchNewUserData();
@@ -26,7 +28,7 @@ function RandomUsers() {
   const fetchNewUserData = async () => {
     const userData = await fetchRandomUserData();
     dispatch(setCurrentUser(userData));
-    setUserAvatar(userData.picture.large); // Ajustar la propiedad del avatar según la nueva estructura
+    setUserAvatar(userData.picture.large);
   };
 
   const handleSaveUser = () => {
@@ -36,7 +38,16 @@ function RandomUsers() {
     fetchNewUserData();
   };
 
+  const handleLogin = () => {
+    if (!isUserLoggedIn && currentUser) {
+      dispatch(setSelectedUser(currentUser));
+      setIsUserLoggedIn(true);
+      console.log("Usuario logueado:", currentUser);
+    }
+  };
+
   const handleLoadNewUser = () => {
+    setIsUserLoggedIn(false); // Resetea el estado de logueo al cargar un nuevo usuario
     fetchNewUserData();
   };
 
@@ -98,6 +109,15 @@ function RandomUsers() {
           </Button>
         </CardActions>
       </Card>
+      <Button
+        sx={{ boxShadow: 4 }}
+        onClick={handleLogin}
+        variant="contained"
+        endIcon={<SaveIcon />}
+        disabled={isUserLoggedIn}
+      >
+        Loguear
+      </Button>
     </div>
   );
 }
