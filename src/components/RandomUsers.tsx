@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../redux/Store";
-import { fetchRandomUserData } from "../services/Api";
 import { setCurrentUser, addUser } from "../redux/reducers/UserSlice";
+import { fetchRandomUserData } from "../services/Api";
 import {
   Card,
   CardActions,
@@ -13,49 +12,39 @@ import {
 } from "@mui/material";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import SaveIcon from "@mui/icons-material/Save";
+import { RootState } from "../redux/Store";
 
 function RandomUsers() {
-  // Obtener el dispatch y el estado "selectedUsers" y "currentUser" del store
   const dispatch = useDispatch();
-  const { selectedUsers, currentUser } = useSelector(
-    (state: RootState) => state.user
-  );
+  const { currentUser } = useSelector((state: RootState) => state.user);
   const [userAvatar, setUserAvatar] = useState("");
 
-  // Al montar el componente, buscar un nuevo usuario
   useEffect(() => {
     fetchNewUserData();
   }, []);
 
-  // Función para buscar un nuevo usuario
   const fetchNewUserData = async () => {
-    const data = await fetchRandomUserData();
-    dispatch(setCurrentUser(data)); // Actualizar el usuario actual en el estado
-    setUserAvatar(data.avatar); // Establecer el avatar del usuario actual en el estado local
+    const userData = await fetchRandomUserData();
+    dispatch(setCurrentUser(userData));
+    setUserAvatar(userData.picture.large); // Ajustar la propiedad del avatar según la nueva estructura
   };
 
-  // Manejar el evento de guardar usuario
   const handleSaveUser = () => {
     if (currentUser) {
-      dispatch(addUser(currentUser)); // Agregar el usuario actual a la lista de usuarios seleccionados en el estado
+      dispatch(addUser(currentUser));
     }
-    fetchNewUserData(); // Buscar un nuevo usuario después de guardar el actual
+    fetchNewUserData();
   };
 
-  // Manejar el evento de cargar un nuevo usuario
   const handleLoadNewUser = () => {
-    fetchNewUserData(); // Buscar un nuevo usuario al hacer clic en el botón "Siguiente Usuario"
+    fetchNewUserData();
   };
 
-  // Si no hay un usuario actual, mostrar un mensaje de búsqueda
   if (!currentUser) {
     return <div>Buscando Usuario...</div>;
   }
 
-  // Si hay un usuario actual, mostrar los detalles del usuario en una tarjeta
-  const { first_name, last_name, email } = currentUser;
-
-  console.log(selectedUsers);
+  const { name, email } = currentUser;
 
   return (
     <div
@@ -64,10 +53,10 @@ function RandomUsers() {
       <Card
         sx={{
           maxWidth: 345,
-          boxShadow: 4,
+          boxShadow: 8,
         }}
       >
-        <CardContent>
+        <CardContent sx={{ backgroundColor: "#b0c4de" }}>
           <Avatar
             src={userAvatar}
             alt="Avatar"
@@ -81,10 +70,10 @@ function RandomUsers() {
             }}
           />
           <Typography gutterBottom variant="h5" component="div" align="center">
-            Nombre: {first_name}
+            Nombre: {name.first}
           </Typography>
           <Typography variant="h5" component="div" align="center">
-            Apellido: {last_name}
+            Apellido: {name.last}
           </Typography>
           <Typography variant="body2" color="text.secondary" align="center">
             Email: {email}

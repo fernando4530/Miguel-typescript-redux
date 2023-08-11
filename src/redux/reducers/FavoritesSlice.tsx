@@ -15,7 +15,7 @@ const favoritesSlice = createSlice({
   reducers: {
     toggleFavorite: (state, action: PayloadAction<UserData>) => {
       const existingIndex = state.favorites.findIndex(
-        (user) => user.id === action.payload.id
+        (user) => user.id.value === action.payload.id.value
       );
       if (existingIndex !== -1) {
         state.favorites.splice(existingIndex, 1);

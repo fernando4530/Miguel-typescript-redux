@@ -1,40 +1,56 @@
 export interface UserData {
-  name: string;
-  id: number;
-  uid: string;
-  password: string;
-  first_name: string;
-  last_name: string;
-  username: string;
-  email: string;
-  avatar: string;
   gender: string;
-  phone_number: string;
-  social_insurance_number: string;
-  date_of_birth: string;
-  employment: {
+  name: {
     title: string;
-    key_skill: string;
+    first: string;
+    last: string;
   };
-  address: {
+  location: {
+    street: {
+      number: number;
+      name: string;
+    };
     city: string;
-    street_name: string;
-    street_address: string;
-    zip_code: string;
     state: string;
     country: string;
+    postcode: string;
     coordinates: {
-      lat: number;
-      lng: number;
+      latitude: string;
+      longitude: string;
+    };
+    timezone: {
+      offset: string;
+      description: string;
     };
   };
-  credit_card: {
-    cc_number: string;
+  email: string;
+  login: {
+    uuid: string;
+    username: string;
+    password: string;
+    salt: string;
+    md5: string;
+    sha1: string;
+    sha256: string;
   };
-  subscription: {
-    plan: string;
-    status: string;
-    payment_method: string;
-    term: string;
+  dob: {
+    date: string;
+    age: number;
   };
+  registered: {
+    date: string;
+    age: number;
+  };
+  phone: string;
+  cell: string;
+  id: {
+    name: string;
+    value: string;
+  };
+  picture: {
+    large: string;
+    medium: string;
+    thumbnail: string;
+  };
+  nat: string;
 }
