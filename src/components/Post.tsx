@@ -129,7 +129,7 @@ function Post() {
               )}
               <TextField
                 autoComplete="off"
-                placeholder="Escribe tu mensaje aquí..."
+                placeholder="Escribe tu post aquí..."
                 minRows={3}
                 value={inputMessage}
                 onChange={handleMessageChange}
