@@ -8,7 +8,7 @@ import {
   Avatar,
   TextField,
   Button,
-  Box, // Agregado el import para el área de texto
+  Box,
 } from "@mui/material";
 import { addMessage } from "../redux/reducers/PostSlice";
 
@@ -49,6 +49,8 @@ function Post() {
     }
   };
 
+  const isButtonDisabled = !selectedUser;
+
   return (
     <div
       style={{
@@ -74,7 +76,7 @@ function Post() {
           padding: "10px 0",
         }}
       >
-        Postea lo que piensas
+        Publicaciones
       </Button>
 
       <div style={{ display: "flex", flex: 1 }}>
@@ -109,6 +111,7 @@ function Post() {
                 </div>
               )}
               <TextField
+                autoComplete="off"
                 placeholder="Escribe tu mensaje aquí..."
                 minRows={3}
                 value={inputMessage}
@@ -129,6 +132,7 @@ function Post() {
                 onChange={handleImageUrlChange}
                 variant="outlined"
                 fullWidth
+                autoComplete="off"
                 sx={{
                   width: "98%",
                   marginBottom: "10px",
@@ -137,11 +141,13 @@ function Post() {
                   borderRadius: "4px",
                 }}
               />
+
               <Button
                 sx={{ backgroundColor: "rgba(0, 0, 0, 0.8)", color: "white" }}
                 variant="contained"
                 color="primary"
                 onClick={handleCommentSubmit}
+                disabled={isButtonDisabled}
               >
                 Enviar Post
               </Button>
@@ -175,7 +181,7 @@ function Post() {
             }}
           >
             <Typography variant="h5" gutterBottom>
-              Mensajes Recientes:
+              Posts Recientes:
             </Typography>
             {messages.map((msg, index) => (
               <div
@@ -197,9 +203,13 @@ function Post() {
                   />
                   <Typography
                     variant="body1"
-                    style={{ wordWrap: "break-word", overflowWrap: "anywhere", marginTop: 4}}
+                    style={{
+                      wordWrap: "break-word",
+                      overflowWrap: "anywhere",
+                      marginTop: 4,
+                    }}
                   >
-                    {msg.user.login.username}: {msg.message} 
+                    {msg.user.login.username}: {msg.message}
                   </Typography>
                 </div>
                 {msg.image && (
