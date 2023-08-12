@@ -9,8 +9,10 @@ import {
   TextField,
   Button,
   Box,
+  IconButton,
 } from "@mui/material";
-import { addMessage } from "../redux/reducers/PostSlice";
+import { addMessage, addLike } from "../redux/reducers/PostSlice";
+import { ThumbUp, ThumbUpOutlined } from "@mui/icons-material";
 
 function Post() {
   const selectedUser = useSelector(
@@ -41,11 +43,26 @@ function Post() {
         message: inputMessage,
         timestamp: Date.now(),
         image: imageUrl && (imageUrl.startsWith("http") ? imageUrl : undefined),
+        likes: 0, // Initialize likes to 0 when adding a new message
+        likedBy: [], // Initialize likedBy array
       };
       dispatch(addMessage(newMessage));
       console.log("Comentario enviado:", inputMessage);
       setInputMessage("");
       setImageUrl("");
+    }
+  };
+
+  const handleLike = (index: number) => {
+    if (selectedUser) {
+      const message = messages[index];
+
+      if (!message.likedBy.includes(selectedUser.login.username)) {
+        dispatch(addLike({ index, username: selectedUser.login.username }));
+      } else {
+        // Dado que el usuario ya le dio like, deshabilitamos el botón
+        return;
+      }
     }
   };
 
@@ -143,7 +160,6 @@ function Post() {
               />
 
               <Button
-                sx={{ backgroundColor: "rgba(0, 0, 0, 0.8)", color: "white" }}
                 variant="contained"
                 color="primary"
                 onClick={handleCommentSubmit}
@@ -226,6 +242,38 @@ function Post() {
                 >
                   Enviado: {new Date(msg.timestamp).toLocaleTimeString()}
                 </Typography>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "flex-end",
+                  }}
+                >
+                  <IconButton
+                    color="info"
+                    onClick={() => handleLike(index)}
+                    sx={{ marginTop: "4px" }}
+                    disabled={
+                      selectedUser
+                        ? msg.likedBy.includes(selectedUser.login.username)
+                        : false
+                    }
+                  >
+                    {selectedUser &&
+                    msg.likedBy.includes(selectedUser.login.username) ? (
+                      <ThumbUp color="primary" />
+                    ) : (
+                      <ThumbUpOutlined />
+                    )}
+                  </IconButton>
+                  <Typography
+                    variant="caption"
+                    color="textSecondary"
+                    sx={{ marginLeft: 2 }}
+                  >
+                    {msg.likes} {msg.likes === 1 ? "like" : "likes"}
+                  </Typography>
+                </div>
               </div>
             ))}
           </Box>
