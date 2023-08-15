@@ -11,7 +11,7 @@ import {
   Box,
   IconButton,
 } from "@mui/material";
-import { addMessage, addLike } from "../redux/reducers/PostSlice";
+import { addMessage, addLike, removeLike } from "../redux/reducers/PostSlice";
 import { ThumbUp, ThumbUpOutlined } from "@mui/icons-material";
 
 function Post() {
@@ -43,8 +43,8 @@ function Post() {
         message: inputMessage,
         timestamp: Date.now(),
         image: imageUrl && (imageUrl.startsWith("http") ? imageUrl : undefined),
-        likes: 0, // Initialize likes to 0 when adding a new message
-        likedBy: [], // Initialize likedBy array
+        likes: 0,
+        likedBy: [],
       };
       dispatch(addMessage(newMessage));
       console.log("Comentario enviado:", inputMessage);
@@ -53,15 +53,15 @@ function Post() {
     }
   };
 
-  const handleLike = (index: number) => {
+  const handleToggleLike = (index: number) => {
     if (selectedUser) {
       const message = messages[index];
+      const username = selectedUser.login.username;
 
-      if (!message.likedBy.includes(selectedUser.login.username)) {
-        dispatch(addLike({ index, username: selectedUser.login.username }));
+      if (!message.likedBy.includes(username)) {
+        dispatch(addLike({ index, username }));
       } else {
-        // Dado que el usuario ya le dio like, deshabilitamos el botón
-        return;
+        dispatch(removeLike({ index, username }));
       }
     }
   };
@@ -69,14 +69,7 @@ function Post() {
   const isButtonDisabled = !selectedUser;
 
   return (
-    <div
-      style={{
-        backgroundColor: "#b0c4de",
-        minHeight: "100vh",
-        display: "flex",
-        flexDirection: "column",
-      }}
-    >
+    <div>
       <Button
         variant="contained"
         sx={{
@@ -251,13 +244,8 @@ function Post() {
                 >
                   <IconButton
                     color="info"
-                    onClick={() => handleLike(index)}
-                    sx={{ marginTop: "4px" }}
-                    disabled={
-                      selectedUser
-                        ? msg.likedBy.includes(selectedUser.login.username)
-                        : false
-                    }
+                    onClick={() => handleToggleLike(index)}
+                    disabled={!selectedUser}
                   >
                     {selectedUser &&
                     msg.likedBy.includes(selectedUser.login.username) ? (

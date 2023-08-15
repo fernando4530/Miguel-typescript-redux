@@ -2,8 +2,8 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../redux/Store";
 import { UserData } from "../redux/models/UserTypes";
-import { Grid, Card, CardContent, Avatar, Typography } from "@mui/material";
-import { toggleFavorite } from "../redux/reducers/FavoritesSlice"; // Importa la acción para marcar/desmarcar favoritos
+import { Grid, Card, CardContent, Avatar, Typography, IconButton } from "@mui/material";
+import { toggleFavorite } from "../redux/reducers/FavoritesSlice";
 import { Button } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 
@@ -18,6 +18,10 @@ const MyAgenda: React.FC = () => {
 
   const isUserFavorite = (user: UserData) =>
     favorites.some((favUser) => favUser.id === user.id);
+
+  const handleToggleFavorite = (user: UserData) => {
+    dispatch(toggleFavorite(user));
+  };
 
   return (
     <div>
@@ -81,12 +85,22 @@ const MyAgenda: React.FC = () => {
                 </Typography>
               </CardContent>
               <CardContent>
-                <div onClick={() => dispatch(toggleFavorite(user))}>
-                  <FavoriteIcon
-                    sx={{ marginLeft: 1.5 }}
-                    style={{ fill: isUserFavorite(user) ? "red" : "grey" }}
-                  />
-                  <Typography sx={{ marginBottom: -2 }}>favorito</Typography>
+                <div>
+                  <IconButton
+                    color="info"
+                    onClick={() => handleToggleFavorite(user)}
+                  >
+                    <FavoriteIcon
+                      className="icon-click"
+                      sx={{
+                        marginLeft: 1.5,
+                        fill: isUserFavorite(user) ? "red" : "grey"
+                      }}
+                    />
+                  </IconButton>
+                  <Typography sx={{ marginBottom: -2 }}>
+                    {isUserFavorite(user) ? "Favorito" : "No favorito"}
+                  </Typography>
                 </div>
               </CardContent>
             </Card>
