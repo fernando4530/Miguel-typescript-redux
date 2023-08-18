@@ -6,6 +6,8 @@ import { Grid, Card, CardContent, Avatar, Typography, IconButton } from "@mui/ma
 import { toggleFavorite } from "../redux/reducers/FavoritesSlice";
 import { Button } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import { Link } from "react-router-dom";
+import { setSelectedUser } from "../redux/reducers/UserLoggedInSlice"; // Importa la acción para seleccionar al usuario
 
 const MyAgenda: React.FC = () => {
   const selectedUsers = useSelector(
@@ -21,6 +23,12 @@ const MyAgenda: React.FC = () => {
 
   const handleToggleFavorite = (user: UserData) => {
     dispatch(toggleFavorite(user));
+  };
+
+  // función para seleccionar el usuario antes de ir a la página de Post
+  const handleGoToPost = (user: UserData) => {
+    console.log("Usuario seleccionado en mi agenda:", user); 
+    dispatch(setSelectedUser(user)); // Selecciona al usuario en el estado de Redux antes de ir a la página de Post
   };
 
   return (
@@ -102,6 +110,24 @@ const MyAgenda: React.FC = () => {
                     {isUserFavorite(user) ? "Favorito" : "No favorito"}
                   </Typography>
                 </div>
+                <Link
+                  to="/post"
+                  style={{ textDecoration: "none" }}
+                  onClick={() => handleGoToPost(user)} // Llama a la función para seleccionar el usuario antes de ir a la página de Post
+                >
+                  <Button
+                    variant="contained"
+                    sx={{
+                      fontSize: "14px",
+                      color: "white",
+                      backgroundColor: "blue",
+                      marginLeft: 22,
+                      marginTop: -9,
+                    }}
+                  >
+                    Ir a post
+                  </Button>
+                </Link>
               </CardContent>
             </Card>
           </Grid>

@@ -15,31 +15,28 @@ import { addMessage, addLike, removeLike } from "../redux/reducers/PostSlice";
 import { ThumbUp, ThumbUpOutlined } from "@mui/icons-material";
 
 function Post() {
-  const selectedUser = useSelector(
-    (state: RootState) => state.selectedUser.UserLoggIn
+  const selectedAgendaUser = useSelector(
+    (state: RootState) => state.selectedUser.selectedUserLogged
   );
+
   const messages = useSelector((state: RootState) => state.post.messages);
   const dispatch = useDispatch();
 
   const [inputMessage, setInputMessage] = useState("");
   const [imageUrl, setImageUrl] = useState("");
 
-  const handleMessageChange = (event: {
-    target: { value: React.SetStateAction<string> };
-  }) => {
+  const handleMessageChange = (event: { target: { value: React.SetStateAction<string>; }; }) => {
     setInputMessage(event.target.value);
   };
 
-  const handleImageUrlChange = (event: {
-    target: { value: React.SetStateAction<string> };
-  }) => {
+  const handleImageUrlChange = (event: { target: { value: React.SetStateAction<string>; }; }) => {
     setImageUrl(event.target.value);
   };
 
   const handleCommentSubmit = () => {
     if (inputMessage.trim() !== "" || imageUrl.trim() !== "") {
       const newMessage = {
-        user: selectedUser!,
+        user: selectedAgendaUser!,
         message: inputMessage,
         timestamp: Date.now(),
         image: imageUrl && (imageUrl.startsWith("http") ? imageUrl : undefined),
@@ -54,9 +51,9 @@ function Post() {
   };
 
   const handleToggleLike = (index: number) => {
-    if (selectedUser) {
+    if (selectedAgendaUser) {
       const message = messages[index];
-      const username = selectedUser.login.username;
+      const username = selectedAgendaUser.login.username;
 
       if (!message.likedBy.includes(username)) {
         dispatch(addLike({ index, username }));
@@ -66,10 +63,10 @@ function Post() {
     }
   };
 
-  const isButtonDisabled = !selectedUser;
+  const isButtonDisabled = !selectedAgendaUser;
 
   return (
-    <div style={{backgroundColor: "#b0c4de",}}>
+    <div style={{ backgroundColor: "#b0c4de" }}>
       <Button
         variant="contained"
         sx={{
@@ -96,13 +93,13 @@ function Post() {
             sx={{ backgroundColor: "rgba(138, 43, 226, 0.8)", color: "white" }}
           >
             <CardContent>
-              {selectedUser && (
+              {selectedAgendaUser && (
                 <div>
                   <Typography variant="h5" component="div" align="center">
-                    Bienvenid@ {selectedUser.name.first}
+                    Bienvenid@ {selectedAgendaUser.name.first}
                   </Typography>
                   <Avatar
-                    src={selectedUser.picture.large}
+                    src={selectedAgendaUser.picture.large}
                     alt="Avatar"
                     sx={{
                       width: 200,
@@ -116,7 +113,7 @@ function Post() {
                     Nombre de Usuario
                   </Typography>
                   <Typography variant="h5" component="div" align="center">
-                    {selectedUser.login.username}
+                    {selectedAgendaUser.login.username}
                   </Typography>
                 </div>
               )}
@@ -199,7 +196,7 @@ function Post() {
                   display: "flex",
                   flexDirection: "column",
                   alignItems:
-                    msg.user === selectedUser ? "flex-end" : "flex-start",
+                    msg.user === selectedAgendaUser ? "flex-end" : "flex-start",
                   marginBottom: 4,
                 }}
               >
@@ -244,10 +241,10 @@ function Post() {
                   <IconButton
                     color="info"
                     onClick={() => handleToggleLike(index)}
-                    disabled={!selectedUser}
+                    disabled={!selectedAgendaUser}
                   >
-                    {selectedUser &&
-                    msg.likedBy.includes(selectedUser.login.username) ? (
+                    {selectedAgendaUser &&
+                    msg.likedBy.includes(selectedAgendaUser.login.username) ? (
                       <ThumbUp color="primary" />
                     ) : (
                       <ThumbUpOutlined />
