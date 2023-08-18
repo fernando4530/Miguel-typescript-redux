@@ -37,7 +37,7 @@ function Post() {
   };
 
   const handleCommentSubmit = () => {
-    if (inputMessage.trim() !== "") {
+    if (inputMessage.trim() !== "" || imageUrl.trim() !== "") {
       const newMessage = {
         user: selectedUser!,
         message: inputMessage,
@@ -69,7 +69,7 @@ function Post() {
   const isButtonDisabled = !selectedUser;
 
   return (
-    <div>
+    <div style={{backgroundColor: "#b0c4de",}}>
       <Button
         variant="contained"
         sx={{
@@ -137,7 +137,7 @@ function Post() {
                 }}
               />
               <TextField
-                placeholder="ingresa tu imagen (URL)"
+                placeholder="Ingresa tu imagen (URL)"
                 value={imageUrl}
                 onChange={handleImageUrlChange}
                 variant="outlined"
@@ -167,7 +167,6 @@ function Post() {
           style={{
             marginTop: 20,
             flex: 1,
-            backgroundColor: "#b0c4de",
             display: "flex",
             flexDirection: "column-reverse",
             justifyContent: "flex-end",
