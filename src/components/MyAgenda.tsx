@@ -2,16 +2,14 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../redux/Store";
 import { UserData } from "../redux/models/UserTypes";
-import { Grid, Card, CardContent, Avatar, Typography, IconButton } from "@mui/material";
-import { toggleFavorite } from "../redux/reducers/FavoritesSlice";
+import { Grid, Card, CardContent, Avatar, Typography } from "@mui/material";
+import { toggleFavorite } from "../redux/reducers/FavoritesSlice"; // Importa la acción para marcar/desmarcar favoritos
 import { Button } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import { Link } from "react-router-dom";
-import { setSelectedUser } from "../redux/reducers/UserLoggedInSlice"; // Importa la acción para seleccionar al usuario
-
+import { addPublication } from "../redux/reducers/RandomUserSlice";
 const MyAgenda: React.FC = () => {
   const selectedUsers = useSelector(
-    (state: RootState) => state.user.selectedUsers
+    (state: RootState) => state.user.selectedAgendaUsers
   );
   const favorites = useSelector(
     (state: RootState) => state.favorites.favorites
@@ -19,17 +17,14 @@ const MyAgenda: React.FC = () => {
   const dispatch = useDispatch();
 
   const isUserFavorite = (user: UserData) =>
-    favorites.some((favUser) => favUser.id === user.id);
-
-  const handleToggleFavorite = (user: UserData) => {
-    dispatch(toggleFavorite(user));
-  };
-
-  // función para seleccionar el usuario antes de ir a la página de Post
-  const handleGoToPost = (user: UserData) => {
-    console.log("Usuario seleccionado en mi agenda:", user); 
-    dispatch(setSelectedUser(user)); // Selecciona al usuario en el estado de Redux antes de ir a la página de Post
-  };
+    favorites.some((favUser) => favUser.id.value === user.id.value);
+    
+    const handleSendPublication = (userId: string) => {
+      const publication = prompt("Escribe tu publicación:");
+      if (publication) {
+        dispatch(addPublication ({ userId, publication }));
+      }
+    };
 
   return (
     <div>
@@ -93,41 +88,21 @@ const MyAgenda: React.FC = () => {
                 </Typography>
               </CardContent>
               <CardContent>
-                <div>
-                  <IconButton
-                    color="info"
-                    onClick={() => handleToggleFavorite(user)}
-                  >
-                    <FavoriteIcon
-                      className="icon-click"
-                      sx={{
-                        marginLeft: 1.5,
-                        fill: isUserFavorite(user) ? "red" : "grey"
-                      }}
-                    />
-                  </IconButton>
-                  <Typography sx={{ marginBottom: -2 }}>
-                    {isUserFavorite(user) ? "Favorito" : "No favorito"}
-                  </Typography>
+                <div onClick={() => dispatch(toggleFavorite(user))}>
+                  <FavoriteIcon
+                    sx={{ marginLeft: 1.5 }}
+                    style={{ fill: isUserFavorite(user) ? "red" : "grey" }}
+                  />
+                  <Typography sx={{ marginBottom: -2 }}>favorito</Typography>
                 </div>
-                <Link
-                  to="/post"
-                  style={{ textDecoration: "none" }}
-                  onClick={() => handleGoToPost(user)} // Llama a la función para seleccionar el usuario antes de ir a la página de Post
+                <Button
+                sx={{marginLeft: 20}}
+                  onClick={() => handleSendPublication(user.id.value)}
+                  variant="contained"
+                  color="primary"
                 >
-                  <Button
-                    variant="contained"
-                    sx={{
-                      fontSize: "14px",
-                      color: "white",
-                      backgroundColor: "blue",
-                      marginLeft: 22,
-                      marginTop: -9,
-                    }}
-                  >
-                    Ir a post
-                  </Button>
-                </Link>
+                  Enviar Publicación
+                </Button>
               </CardContent>
             </Card>
           </Grid>

@@ -1,27 +1,30 @@
-// userLoggedInSlice.js
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { UserData } from "../models/UserTypes";
 
-interface SelectedUserState {
-  selectedUserLogged: UserData | null;
-  selectedUserPhoto: string | null;
+interface UserLoggInState {
+  UserLoggIn: UserData | null;
 }
 
-const initialState: SelectedUserState = {
-  selectedUserLogged: null,
-  selectedUserPhoto: null,
+const initialState: UserLoggInState = {
+  UserLoggIn: null,
 };
 
-export const userLoggedInSlice = createSlice({
-  name: "userLoggedIn",
+export const UserLoggedIn = createSlice({
+  name: "UserLoggedIn",
   initialState,
   reducers: {
     setSelectedUser: (state, action: PayloadAction<UserData | null>) => {
-      state.selectedUserLogged = action.payload;
-      state.selectedUserPhoto = action.payload?.picture.large || null;
+      state.UserLoggIn = action.payload;
+    },
+    clearSelectedUser: (state) => {
+      state.UserLoggIn = null;
+    },
+    loginUser: (state, action: PayloadAction<UserData>) => {
+      state.UserLoggIn = action.payload;
     },
   },
 });
 
-export const { setSelectedUser } = userLoggedInSlice.actions;
-export default userLoggedInSlice.reducer;
+export const { setSelectedUser, clearSelectedUser, loginUser } =
+  UserLoggedIn.actions;
+export default UserLoggedIn.reducer;

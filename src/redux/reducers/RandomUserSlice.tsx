@@ -2,14 +2,17 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { UserData } from "../models/UserTypes"; // Importa la interfaz UserData
 
 interface UserState {
-  selectedUsers: UserData[];
+  selectedAgendaUsers: UserData[];
   currentUser: UserData | null;
+  publications: Record<string, string[]>; // Objeto para mantener las publicaciones de cada usuario
 }
 
 const initialState: UserState = {
-  selectedUsers: [],
+  selectedAgendaUsers: [],
   currentUser: null,
+  publications: {},
 };
+
 
 export const userSlice = createSlice({
   name: "user",
@@ -23,11 +26,18 @@ export const userSlice = createSlice({
     },
     addUser: (state, _action: PayloadAction<UserData>) => {
       if (state.currentUser) {
-        state.selectedUsers.push(state.currentUser);
+        state.selectedAgendaUsers.push(state.currentUser);
       }
+    },
+    addPublication: (state, action: PayloadAction<{ userId: string; publication: string }>) => {
+      const { userId, publication } = action.payload;
+      if (!state.publications[userId]) {
+        state.publications[userId] = [];
+      }
+      state.publications[userId].push(publication);
     },
   },
 });
 
-export const { setCurrentUser, addUser } = userSlice.actions;
+export const { setCurrentUser, addUser, addPublication } = userSlice.actions;
 export default userSlice.reducer;

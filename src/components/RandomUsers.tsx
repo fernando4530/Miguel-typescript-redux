@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setSelectedUser } from "../redux/reducers/UserLoggedInSlice";
-import { setCurrentUser, addUser } from "../redux/reducers/UserSlice";
+import { setCurrentUser, addUser } from "../redux/reducers/RandomUserSlice";
 import { fetchRandomUserData } from "../services/Api";
 import {
   Card,

@@ -1,3 +1,4 @@
+// Navbar.tsx
 import React from "react";
 import { AppBar, Toolbar, Button, Badge, Box } from "@mui/material";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
@@ -7,20 +8,23 @@ import EditIcon from "@mui/icons-material/Edit";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/Store";
 import { Link, Route, Routes } from "react-router-dom";
-import UserDisplay from "./UserDisplay";
 import RandomUsers from "./RandomUsers";
 import Favorites from "./Favorites";
 import MyAgenda from "./MyAgenda";
 import Post from "./Post";
+import UserDisplay from "../components/UserDisplay";
 
 interface NavbarProps {
   handleShowFavorites: () => void;
-  // ... (otros props)
+  handleShowRandomUser: () => void;
+  handleShowMyAgenda: () => void;
+  showFavorites: boolean;
+  showViews: boolean;
 }
 
 const Navbar: React.FC<NavbarProps> = ({ handleShowFavorites }) => {
   const selectedUsers = useSelector(
-    (state: RootState) => state.user.selectedUsers
+    (state: RootState) => state.user.selectedAgendaUsers
   );
   const favoriteUsers = useSelector(
     (state: RootState) => state.favorites.favorites
@@ -95,7 +99,6 @@ const Navbar: React.FC<NavbarProps> = ({ handleShowFavorites }) => {
           </Box>
         </Toolbar>
       </AppBar>
-
       <Button
         variant="contained"
         sx={{
@@ -113,7 +116,6 @@ const Navbar: React.FC<NavbarProps> = ({ handleShowFavorites }) => {
         Agenda tu usuario aleatorio
       </Button>
 
-      {/* Rutas para las vistas */}
       <Routes>
         <Route path="/randomusers" element={<RandomUsers />} />
         <Route path="/myagenda" element={<MyAgenda />} />

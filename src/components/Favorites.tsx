@@ -2,9 +2,9 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../redux/Store";
 import { UserData } from "../redux/models/UserTypes";
-import { Grid, Card, CardContent, Avatar, Typography, IconButton } from "@mui/material";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import { toggleFavorite } from "../redux/reducers/FavoritesSlice";
+import { Grid, Card, CardContent, Avatar, Typography } from "@mui/material";
+import FavoriteIcon from "@mui/icons-material/Favorite"; // Importa el icono FavoriteIcon
+import { toggleFavorite } from "../redux/reducers/FavoritesSlice"; // Importa la acción para marcar/desmarcar favoritos
 import { Button } from "@mui/material";
 
 const Favorites: React.FC = () => {
@@ -45,7 +45,7 @@ const Favorites: React.FC = () => {
                 backgroundColor: "#b0c4de",
               }}
             >
-              <Typography gutterBottom variant="h5" component="div" sx={{ textAlign: "center" }}>
+              <Typography gutterBottom variant="h5" component="div" sx={{textAlign: "center"}}>
                 {user.name.first}
               </Typography>
               <Avatar
@@ -85,16 +85,10 @@ const Favorites: React.FC = () => {
                   borderRadius: "8px",
                 }}
               >
-                <IconButton
-                  color="info"
-                  onClick={() => handleToggleFavorite(user)}
-                >
-                  <FavoriteIcon
-                    style={{ fill: "red" }}
-                    className="icon-click"
-                  />
-                </IconButton>
-                <Typography>Eliminar de favoritos</Typography>
+                <div onClick={() => handleToggleFavorite(user)}>
+                  <FavoriteIcon style={{ fill: "red" }} />
+                  <Typography>Eliminar de favoritos</Typography>
+                </div>
               </CardContent>
             </Card>
           </Grid>
