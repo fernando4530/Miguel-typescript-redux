@@ -6,9 +6,10 @@ import { Grid, Card, CardContent, Avatar, Typography } from "@mui/material";
 import { toggleFavorite } from "../redux/reducers/FavoritesSlice"; // Importa la acción para marcar/desmarcar favoritos
 import { Button } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import { addPublication } from "../redux/reducers/RandomUserSlice";
+import { Link } from "react-router-dom";
+
 const MyAgenda: React.FC = () => {
-  const selectedUsers = useSelector(
+  const selectedAgendaUsers = useSelector(
     (state: RootState) => state.user.selectedAgendaUsers
   );
   const favorites = useSelector(
@@ -17,14 +18,7 @@ const MyAgenda: React.FC = () => {
   const dispatch = useDispatch();
 
   const isUserFavorite = (user: UserData) =>
-    favorites.some((favUser) => favUser.id.value === user.id.value);
-    
-    const handleSendPublication = (userId: string) => {
-      const publication = prompt("Escribe tu publicación:");
-      if (publication) {
-        dispatch(addPublication ({ userId, publication }));
-      }
-    };
+    favorites.some((favUser) => favUser.id === user.id);
 
   return (
     <div>
@@ -45,7 +39,7 @@ const MyAgenda: React.FC = () => {
       </Button>
 
       <Grid container spacing={2}>
-        {selectedUsers.map((user: UserData) => (
+        {selectedAgendaUsers.map((user: UserData) => (
           <Grid item xs={6} sm={6} md={3} lg={3} xl={3} key={user.id.value}>
             <Card
               sx={{
@@ -88,21 +82,34 @@ const MyAgenda: React.FC = () => {
                 </Typography>
               </CardContent>
               <CardContent>
-                <div onClick={() => dispatch(toggleFavorite(user))}>
+                <div
+                  style={{ width: 1 }}
+                  onClick={() => dispatch(toggleFavorite(user))}
+                >
                   <FavoriteIcon
-                    sx={{ marginLeft: 1.5 }}
+                    sx={{ marginLeft: 1.5, width: "auto" }}
                     style={{ fill: isUserFavorite(user) ? "red" : "grey" }}
                   />
                   <Typography sx={{ marginBottom: -2 }}>favorito</Typography>
                 </div>
-                <Button
-                sx={{marginLeft: 20}}
-                  onClick={() => handleSendPublication(user.id.value)}
-                  variant="contained"
-                  color="primary"
+                <Link
+                  to={`/post/${user.id.value}`}
+                  style={{ textDecoration: "none" }}
                 >
-                  Enviar Publicación
-                </Button>
+                  <Button
+                    sx={{
+                      width: "auto",
+                      height: "auto",
+                      boxShadow: 4,
+                      marginLeft: 22,
+                      marginTop: -7,
+                    }}
+                    variant="outlined"
+                    color="primary"
+                  >
+                    Ir a Post
+                  </Button>
+                </Link>
               </CardContent>
             </Card>
           </Grid>

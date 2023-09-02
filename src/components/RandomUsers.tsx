@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setSelectedUser } from "../redux/reducers/UserLoggedInSlice";
-import { setCurrentUser, addUser } from "../redux/reducers/RandomUserSlice";
+import { addUser, setCurrentUser } from "../redux/reducers/RandomUserSlice";
 import { fetchRandomUserData } from "../services/Api";
 import {
   Card,
@@ -47,7 +47,7 @@ function RandomUsers() {
   };
 
   const handleLoadNewUser = () => {
-    setIsUserLoggedIn(false); // Resetea el estado de logueo al cargar un nuevo usuario
+    setIsUserLoggedIn(false);
     fetchNewUserData();
   };
 

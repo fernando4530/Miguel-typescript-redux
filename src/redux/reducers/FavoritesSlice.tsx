@@ -8,7 +8,7 @@ interface FavoritesState {
 
 const initialState: FavoritesState = {
   favorites: [],
-  selectedUser: undefined
+  selectedUser: undefined,
 };
 
 const favoritesSlice = createSlice({

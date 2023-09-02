@@ -7,10 +7,10 @@ interface UserDisplayProps {}
 
 const UserDisplay: React.FC<UserDisplayProps> = () => {
   const selectedUser = useSelector(
-    (state: RootState) => state.UserLoggin.UserLoggIn
+    (state: RootState) => state.loggInUser.UserLoggIn
   );
   const selectedUserPhoto = useSelector(
-    (state: RootState) => state.UserLoggin.UserLoggIn?.picture.large
+    (state: RootState) => state.loggInUser.UserLoggIn?.picture.large
   );
 
   if (!selectedUser || !selectedUserPhoto) {
