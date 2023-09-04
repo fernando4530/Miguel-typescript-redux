@@ -1,11 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { UserData } from "../models/UserTypes";
 
-interface SelectedUserState {
+interface UserLoggInState {
   UserLoggIn: UserData | null;
 }
 
-const initialState: SelectedUserState = {
+const initialState: UserLoggInState = {
   UserLoggIn: null,
 };
 

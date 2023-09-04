@@ -6,6 +6,7 @@ import { Grid, Card, CardContent, Avatar, Typography } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite"; // Importa el icono FavoriteIcon
 import { toggleFavorite } from "../redux/reducers/FavoritesSlice"; // Importa la acción para marcar/desmarcar favoritos
 import { Button } from "@mui/material";
+import { Link } from "react-router-dom";
 
 const Favorites: React.FC = () => {
   const favorites = useSelector(
@@ -14,7 +15,7 @@ const Favorites: React.FC = () => {
   const dispatch = useDispatch();
 
   const handleToggleFavorite = (user: UserData) => {
-    dispatch(toggleFavorite(user)); // Dispara la acción para marcar/desmarcar favoritos
+    dispatch(toggleFavorite(user));
   };
 
   return (
@@ -45,7 +46,12 @@ const Favorites: React.FC = () => {
                 backgroundColor: "#b0c4de",
               }}
             >
-              <Typography gutterBottom variant="h5" component="div" sx={{textAlign: "center"}}>
+              <Typography
+                gutterBottom
+                variant="h5"
+                component="div"
+                sx={{ textAlign: "center" }}
+              >
                 {user.name.first}
               </Typography>
               <Avatar
@@ -85,10 +91,29 @@ const Favorites: React.FC = () => {
                   borderRadius: "8px",
                 }}
               >
-                <div onClick={() => handleToggleFavorite(user)}>
-                  <FavoriteIcon style={{ fill: "red" }} />
+                <div style={{ height: "auto", width: "auto" }}>
+                  <FavoriteIcon
+                    style={{ fill: "red" }}
+                    onClick={() => handleToggleFavorite(user)}
+                  />
                   <Typography>Eliminar de favoritos</Typography>
                 </div>
+                <Link
+                  to={`/post/${user.id.value}`}
+                  style={{
+                    width: "auto",
+                    height: "auto",
+                    textDecoration: "none",
+                  }}
+                >
+                  <Button
+                    sx={{ boxShadow: 4 }}
+                    variant="outlined"
+                    color="primary"
+                  >
+                    Ir a Post
+                  </Button>
+                </Link>
               </CardContent>
             </Card>
           </Grid>
