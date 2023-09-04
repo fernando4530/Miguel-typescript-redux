@@ -72,8 +72,10 @@ function Post() {
   };
 
   const handleToggleLike = (receiverId: string, messageId: number) => {
-    const userId = loggedInUser.id.value; // Usamos el ID del usuario logueado
-    dispatch(toggleLike({ receiverId, messageId, userId }));
+    const userId = loggedInUser?.id?.value; // Usamos el ID del usuario logueado si existe
+    if (userId) {
+      dispatch(toggleLike({ receiverId, messageId, userId }));
+    }
   };
 
   return (
@@ -206,7 +208,7 @@ function Post() {
                       >
                         <Avatar
                           alt="Avatar"
-                          src={message.sender.picture.large}
+                          src={message.sender?.picture?.large}
                           sx={{
                             width: 50,
                             height: 50,
@@ -217,7 +219,7 @@ function Post() {
                           }}
                         />
                         <Typography sx={{ marginBottom: 4 }}>
-                          {message.sender.name.first} Te a enviado un Post
+                          {message.sender?.name?.first} Te a enviado un Post
                         </Typography>
                       </div>
                       <Typography
@@ -258,14 +260,14 @@ function Post() {
                               }
                               sx={{ color: "primary" }}
                             >
-                              {message.likes.includes(loggedInUser.id.value) ? (
+                              {message.likes?.includes(loggedInUser?.id?.value) ? (
                                 <ThumbUpIcon color="primary" />
                               ) : (
                                 <ThumbUpIcon />
                               )}
                             </IconButton>
                           </Tooltip>
-                          {message.likes.length > 0 && (
+                          {message.likes?.length > 0 && (
                             <Typography
                               variant="caption"
                               component="div"

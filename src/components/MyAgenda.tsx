@@ -18,7 +18,7 @@ const MyAgenda: React.FC = () => {
   const dispatch = useDispatch();
 
   const isUserFavorite = (user: UserData) =>
-    favorites.some((favUser) => favUser.id === user.id);
+    favorites.some((favUser) => favUser.id.value === user.id.value);
 
   return (
     <div>
