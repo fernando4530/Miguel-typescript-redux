@@ -1,48 +1,67 @@
-// PostSlice.js
+// postSlice.js
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { UserData } from "../models/UserTypes";
 
 interface Message {
-  user: UserData;
-  message: string;
+  sender: UserData;
+  receiver: UserData;
+  content?: string;
   timestamp: number;
-  image?: string;
-  likes: number;
-  likedBy: string[]; // Agregar esta propiedad para rastrear los usuarios que dieron like
+  messageId: number; // Agregamos un messageId único para cada post
+  imageUrl?: string;
+  likes: string[]; // Array de IDs de usuarios que dieron "like"
 }
 
 interface PostState {
-  messages: Message[];
+  userPosts: Record<string, Message[]>;
 }
 
 const initialState: PostState = {
-  messages: [],
+  userPosts: {},
 };
 
 const postSlice = createSlice({
   name: "post",
   initialState,
   reducers: {
-    addMessage: (state, action: PayloadAction<Message>) => {
-      state.messages.push({ ...action.payload, likes: 0, likedBy: [] });
-    },
-    addLike: (state, action: PayloadAction<{ index: number; username: string }>) => {
-      const { index, username } = action.payload;
-      if (!state.messages[index].likedBy.includes(username)) {
-        state.messages[index].likes++;
-        state.messages[index].likedBy.push(username);
+    addPost: (state, action: PayloadAction<Message>) => {
+      const { receiver } = action.payload;
+
+      if (!state.userPosts[receiver.id.value]) {
+        state.userPosts[receiver.id.value] = [];
       }
+
+      state.userPosts[receiver.id.value].push({
+        ...action.payload,
+        likes: [],
+      });
     },
-    removeLike: (state, action: PayloadAction<{ index: number; username: string }>) => {
-      const { index, username } = action.payload;
-      const likedIndex = state.messages[index].likedBy.indexOf(username);
-      if (likedIndex !== -1) {
-        state.messages[index].likes--;
-        state.messages[index].likedBy.splice(likedIndex, 1);
+    toggleLike: (
+      state,
+      action: PayloadAction<{
+        receiverId: string;
+        messageId: number;
+        userId: string;
+      }>
+    ) => {
+      const { receiverId, messageId, userId } = action.payload;
+
+      const post = state.userPosts[receiverId].find(
+        (post) => post.messageId === messageId
+      );
+
+      if (post) {
+        const likedIndex = post.likes.indexOf(userId);
+        if (likedIndex === -1) {
+          post.likes.push(userId);
+        } else {
+          post.likes.splice(likedIndex, 1);
+        }
       }
     },
   },
 });
 
-export const { addMessage, addLike, removeLike } = postSlice.actions;
+export const { addPost, toggleLike } = postSlice.actions;
+
 export default postSlice.reducer;

@@ -1,15 +1,15 @@
-// Navbar.tsx
 import React from "react";
-import { AppBar, Toolbar, Button, Badge } from "@mui/material";
+import { AppBar, Toolbar, Button, Badge, Box } from "@mui/material";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import EventNoteIcon from "@mui/icons-material/EventNote";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import EditIcon from '@mui/icons-material/Edit';import { useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "../redux/Store";
 import { Link, Route, Routes } from "react-router-dom";
 import RandomUsers from "./RandomUsers";
 import Favorites from "./Favorites";
 import MyAgenda from "./MyAgenda";
+import UserDisplay from "../components/UserDisplay";
 import Post from "./Post";
 
 interface NavbarProps {
@@ -22,7 +22,7 @@ interface NavbarProps {
 
 const Navbar: React.FC<NavbarProps> = ({ handleShowFavorites }) => {
   const selectedUsers = useSelector(
-    (state: RootState) => state.user.selectedUsers
+    (state: RootState) => state.user.selectedAgendaUsers
   );
   const favoriteUsers = useSelector(
     (state: RootState) => state.favorites.favorites
@@ -77,19 +77,11 @@ const Navbar: React.FC<NavbarProps> = ({ handleShowFavorites }) => {
               Favoritos
             </Button>
           </Badge>
-          <Button
-          startIcon={<EditIcon />}
-            color="inherit"
-            sx={{
-              backgroundColor: "blue",
-              color: "white",
-              marginLeft: 1,
-            }}
-            component={Link}
-            to="/post"
+          <Box
+            sx={{ marginLeft: "auto", display: "flex", alignItems: "center" }}
           >
-            Post
-          </Button>
+            <UserDisplay />
+          </Box>
         </Toolbar>
       </AppBar>
       <Button
@@ -109,13 +101,11 @@ const Navbar: React.FC<NavbarProps> = ({ handleShowFavorites }) => {
         Agenda tu usuario aleatorio
       </Button>
 
-      {/* Rutas para las vistas */}
       <Routes>
         <Route path="/randomusers" element={<RandomUsers />} />
         <Route path="/myagenda" element={<MyAgenda />} />
         <Route path="/favorites" element={<Favorites />} />
-        <Route path="/post" element={<Post />} />{" "}
-        {/* Agrega la ruta para el componente Post */}
+        <Route path="/post/:userId" Component={Post} />
       </Routes>
     </div>
   );

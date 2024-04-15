@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setSelectedUser } from "../redux/reducers/UserLoggedInSlice";
-import { setCurrentUser, addUser } from "../redux/reducers/UserSlice";
+import { addUser, setCurrentUser } from "../redux/reducers/RandomUserSlice";
 import { fetchRandomUserData } from "../services/Api";
 import {
   Card,
@@ -26,28 +26,39 @@ function RandomUsers() {
   }, []);
 
   const fetchNewUserData = async () => {
-    const userData = await fetchRandomUserData();
+    let userData;
+    do {
+      userData = await fetchRandomUserData();
+    } while (userData.id === null); // Cambié userData.Id a userData.id
+
     dispatch(setCurrentUser(userData));
     setUserAvatar(userData.picture.large);
   };
 
   const handleSaveUser = () => {
-    if (currentUser) {
+    if (currentUser && currentUser.id.value !== null) {
       dispatch(addUser(currentUser));
+      console.log("Usuario agendado:", currentUser);
+    } else {
+      alert ("Lo lamento este usuario no cumple con los requisitos de Mi Agenda")
+      console.log("Usuario descartado:", currentUser);
     }
     fetchNewUserData();
   };
 
   const handleLogin = () => {
-    if (!isUserLoggedIn && currentUser) {
+    if (!isUserLoggedIn && currentUser?.id.value !== null) {
       dispatch(setSelectedUser(currentUser));
       setIsUserLoggedIn(true);
       console.log("Usuario logueado:", currentUser);
+    } else {
+      console.log("Usuario descartado:", currentUser);
+      fetchNewUserData();
     }
   };
 
   const handleLoadNewUser = () => {
-    setIsUserLoggedIn(false); // Resetea el estado de logueo al cargar un nuevo usuario
+    setIsUserLoggedIn(false);
     fetchNewUserData();
   };
 
@@ -91,14 +102,16 @@ function RandomUsers() {
           </Typography>
         </CardContent>
         <CardActions>
-          <Button
-            sx={{ boxShadow: 4 }}
-            onClick={handleLoadNewUser}
-            variant="outlined"
-            startIcon={<ArrowForwardIcon />}
-          >
-            Siguiente Usuario
-          </Button>
+          {currentUser.id !== null && (
+            <Button
+              sx={{ boxShadow: 4 }}
+              onClick={handleLoadNewUser}
+              variant="outlined"
+              startIcon={<ArrowForwardIcon />}
+            >
+              Siguiente Usuario
+            </Button>
+          )}
           <Button
             sx={{ boxShadow: 4 }}
             onClick={handleSaveUser}
